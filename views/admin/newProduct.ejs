@@ -1,0 +1,103 @@
+<style>
+  .newProductSection {
+    margin-top: 400px;
+    width: 80%;
+    border: 1px solid #757575;
+    margin:auto;
+    margin-top:20px;
+    padding:20px;
+  }
+</style>
+
+<div class="container">
+  <div class="row">
+    <div class="newProductSection">
+      <div style="text-align:center;">
+        <h4>New Product</h4>
+      </div>
+      <form id="newProductForm" style="display:block;">
+           <div class="newProductSection#1">
+             <div class="row">
+               <div class="col-md-6">
+                 <div class="form-group">
+                   <input type="text" id="productName" placeholder="Product Name" class="form-control">
+                 </div>
+               </div>
+               <div class="col-md-6">
+                 <div class="form-group">
+                   <input type="text" id="price" placeholder="Price" class="form-control">
+                 </div>
+               </div>
+               <div class="col-md-6">
+                 <div class="form-group">
+                   <input type="text" id="calories" placeholder="calories" class="form-control">
+                 </div>
+               </div>
+               <div class="col-md-3">
+                 <div class="form-group">
+                   <select id="discount" class="form-control">
+                     <option value="0">Select Discount</option>
+                   <%  discounts.forEach(function(discount){ %>
+                     <option value="<%= discount.discount%>"><%= discount.discount%>%</option>
+                   <% }) %>
+                   </select>
+                 </div>
+               </div>
+               <div class="col-md-3">
+                 <div class="form-group">
+                   <select id="inStock" class="form-control">
+                     <option value="true">Yes</option>
+                     <option value="false">No</option>
+                   </select>
+                 </div>
+               </div>
+               <div class="col-md-6">
+                 <div class="form-group">
+                   <select id="mainCategory" class="form-control">
+                     <option value="0">Select a main-category</option>
+                     <%  categories.forEach(function(category){ %>
+                       <option value="<%= category._id%>"><%= category.mainCategory%></option>
+                     <% }) %>
+                   </select>
+                 </div>
+               </div>
+               <div class="col-md-6">
+                 <div class="form-group">
+                   <select id="subCategory" class="form-control">
+                     <option>Select a sub-category</option>
+                   </select>
+                 </div>
+               </div>
+               <div class="col-md-12">
+                 <div class="form-group">
+                   <textarea id="description" rows="8" cols="80" class="form-control" placeholder="Product Description"></textarea>
+                 </div>
+               </div>
+               <div class="col-md-12">
+                 <div class="form-group">
+                   <label>Menu Options</label>
+                   <%  options.forEach(function(option){ %>
+                    <div class="form-check">
+                       <label class="form-check-label" for="check1">
+                         <input type="checkbox" class="form-check-input optionsCheckBox" id="check1" name="option1" value="<%= option._id%>"><%= option.optionName%>
+                       </label>
+                     </div>
+                    <% }) %>
+                 </div>
+               </div>
+             </div>
+             <input type="submit" class="btn btn-primary form-control saveProductAndNext" value="Next">
+           </div>
+      </form>
+      <form action="/adminApi/new/upload" method="post" enctype="multipart/form-data" style="display:none;" id="uploadPhotoForm">
+        <input type="hidden" name="productID" id="productID">
+        <div class="col-md-12">
+          <div class="form-group">
+            <input type="file" name="fileupload" class="form-control" id="fileupload">
+          </div>
+        </div>
+        <input type="submit" class="btn btn-primary form-control uploadProductImage" value="Upload and Save">
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div style="margin:20px;">
+   <button type="button" class="btn btn-primary" onclick="window.location.href='/adminApi/newProduct'">New Product</button>
+</div>
+
+<div class="table-responsive">
+   <table class="table table-bordered">
+     <thead>
+       <tr>
+         <th>#</th>
+         <th>Name</th>
+         <th>Price</th>
+         <th>InStock</th>
+         <th>Calories</th>
+         <th>Discount</th>
+         <th>actions</th>
+
+       </tr>
+     </thead>
+     <tbody>
+       <% products.forEach(function(product, indx){ %>
+       <tr>
+         <td><%=++indx %></td>
+         <td><%=product.name%></td>
+         <td><%=product.price%></td>
+         <td style="<%=product.inStock ? 'color:blue;': 'color:red;'%>" ><%=product.inStock ? "Yes": "No"%></td>
+         <td><%=product.calories%></td>
+         <td style='<%=product.discountIsApplied ? product.discount : 'color:red;'%>'><%=product.discountIsApplied ? product.discount : "No"%></td>
+         <td>
+           <button type="button" name="button"> Edit</button>
+           <button type="button" name="button"> Delete</button>
+         </td>
+       </tr>
+       <% }) %>
+     </tbody>
+   </table>
+ </div>

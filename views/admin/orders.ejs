@@ -1,0 +1,57 @@
+<div class="orderSentMessage" style="color:blue;"></div>
+<div class="table-responsive">
+   <table class="table table-bordered">
+     <thead>
+       <tr>
+         <th>Customer</th>
+         <th>Items</th>
+         <th>Total</th>
+         <th></th>
+       </tr>
+     </thead>
+     <tbody id="orderTable">
+       <% orders.forEach(function(order, indx){ %>
+         <tr id="orders<%=order._id%>">
+             <td><%=order.user.name%></td>
+             <td style="background-color:blue;color:#fff;">
+               <%order.items.forEach(function(item, idx, array){%>
+                 <%=displayOrderItems(item.product.name, item.qty, idx, array)%>
+               <% }) %>
+            </td>
+            <td>$<%=numberWithCommas(parseFloat(order.total).toFixed(2))%></td>
+            <td>
+              <button type="button" name="button" id="<%=order._id%>" class="btn btn-warning maximizeOrder" data-toggle="modal" data-target="#maximizeOrder-modal">Maximize order</button>
+              <button type="button" name="button" id="<%=order._id%>" class="btn btn-primary completeOrder">Complete Order</button>
+            </td>
+         </tr>
+       <% }) %>
+     </tbody>
+   </table>
+ </div>
+ <div id="snackbar">New Incoming Order</div>
+ <!-- Modal -->
+<div class="modal fade" id="maximizeOrder-modal" tabindex="-1" role="dialog" aria-labelledby="maximizeOrder-modal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Item</th>
+              <th>options</th>
+              <th>Qty</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody id="maximizeOrder-tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

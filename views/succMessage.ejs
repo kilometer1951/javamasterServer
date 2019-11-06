@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<style media="screen">
+@font-face {
+  font-family: letterFont;
+  src: url("/webfont/Obviously-Regular.woff") format("woff"),
+    url("/webfont/Obviously-Regular.otf") format("woff");
+}
+
+
+</style>
+
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body style="<%= msg === 'suc' ? 'background:#3fb149;' : 'background:#dd5942' %>">
+    <% if(msg === 'suc'){ %>
+      <div style="font-family:letterFont;text-align:center;color:#fff;margin-top:50%;">
+        <p>
+            <span style="font-size:3em;">
+              <i class="far fa-check-circle"></i>
+              <br/>
+              See you soon!
+            </span><br/>
+            <span>
+                 Your Order is in the works
+            </span>
+        </p>
+      </div>
+      <%} else {%>
+        <div style="font-family:letterFont;text-align:center;color:#fff;margin-top:50%;">
+          <p>
+              <span style="font-size:3em;">
+                <i class="fas fa-times"></i>
+                <br/>
+                Payment Error! Redirecting you to home
+              </span><br/>
+          </p>
+        </div>
+
+        <% } %>
+
+        <input type="hidden" id="cartID" value="<%=cartID%>"/>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script type="text/javascript">
+  const cartID = $("#cartID").val()
+  if (cartID !== "null") {
+    var socket = io();
+    socket.emit("newOrder", cartID);
+
+  }
+
+    setInterval(function(){
+         window.location.href = "/mobileApp/products"
+
+  },2000)
+  </script>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Admin</title>
+  </head>
+  <body>
+<style media="screen">
+  .header a{
+    margin: 20px;
+  }
+  #snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+</style>
+<!-- example 1 - using absolute position for center -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <a class="navbar-brand abs" href="/admin">Counter Coffee</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav">
+              <% if(user.role !== "Orders"){ %>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/adminApi/staffs" >Staffs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/adminApi/orders">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a data-toggle="modal" data-target=".discount-modal" class="nav-link discount-modalBtn" href="#">Discounts</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    Category
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item mainCategory mainCategory-modalBtn" data-toggle="modal" data-target=".mainCategory-modal" href="#">Main-Category</a>
+                    <a class="dropdown-item subCategory subCategory-modalBtn" data-toggle="modal" data-target=".subCategory-modal" href="#">Sub-Category</a>
+                  </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link options options-modalBtn" data-toggle="modal" data-target=".options-modal" href="#">Options</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/adminApi/products">Products</a>
+                </li>
+              <% } %>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="" data-target="#myModal" data-toggle="modal">Welcome, <%= user.fname%></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/adminAuth/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+     <%- body%>
+
+
+     <!-- options category -->
+      <div class="modal fade options-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+       <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="optionText">Option</h5>
+               <p class="optionID"></p>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-body">
+               <div class="container-fluid">
+                 <div class="row">
+                   <div class="col-md-12 newOptionsBtnDiv" style="margin-bottom:10px;">
+                     <button type="button" class="btn btn-primary newOptionsBtn">New</button>
+                   </div>
+                   <p style="color:blue;display:none;" id="successMessage">Operation Successful</p>
+
+                   <div class="col-md-12 row newOptionsDiv" style="display:none;">
+                     <div class="col-md-12 optionName-div" style="display:none;" >
+                       <div class="form-group">
+                         <label>Option Name</label>
+                         <input type="text" class="form-control" id="optionName">
+                         <button type="submit" class="btn btn-success" id="saveOptionAndNext">Save and Next</button>
+                         <button type="submit" class="btn btn-danger cancel">Cancel</button>
+                       </div>
+                     </div>
+                     <div class="col-md-12 optionContent-div" style="display:none;">
+                       <div class="form-group">
+                         <label>Option Content</label>
+                         <input type="text" class="form-control" id="optionContent">
+                         <button type="submit" class="btn btn-success saveOptionContent" id=""></button>
+                         <button type="submit" class="btn btn-warning done">Done</button>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-md-12">
+                     <div class="table-responsive optionTableSection" style="display:block;">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Option</th>
+                              <th>Content</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody id="optionsTable"></tbody>
+                        </table>
+                       </div>
+                       <div class="editoptionSection" style="display:none;">
+                         <div class="row">
+                             <div class="col-md-12">
+                               <div class="form-group">
+                                 <label>Option Name</label>
+                                 <input type="text" class="form-control" id="editOptionNameInput">
+                                 <button type="button" class="btn btn-primary updateOptionName">Update</button>
+                               </div>
+                             </div>
+                             <div class="editOptionDiv" style="width:100%;">
+                               <div class="editOptionData"></div>
+                             </div>
+                             <div class="col-md-12">
+                               <button type="button" class="btn btn-warning " style="float:right;" onclick="cancelEditOption()">Back</button>
+                             </div>
+                           </div>
+                         </div>
+                    </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+
+
+
+          <!-- sub category -->
+           <div class="modal fade subCategory-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                 <div class="modal-header">
+                    <h5 class="modal-title" id="subCategoryTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col-md-12 i" style="margin-bottom:10px;">
+                          <button type="button" class="btn btn-primary newSubCategoryBtn" >New</button>
+                        </div>
+                        <p style="color:blue;display:none;" id="successMessage">Operation Successful</p>
+
+                        <div class="col-md-12 row newSubCategory" style="display:none;">
+
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <select class="form-control" id="selectMainCategory">
+                                  <option value="">Select a main-category</option>
+                              </select><br/>
+                              <input type="text" class="form-control" placeholder="Enter Main-Category" id="newSubCategoryInput">
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <button type="button"  class="btn btn-success addSubCategory" >Add</button>
+                              <button type="button" class="btn btn-danger" id="cancelNewSubCategory">Cancel</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="table-responsive subCategorySection" style="display:block;">
+                             <table class="table table-bordered">
+                               <thead>
+                                 <tr>
+                                   <th>Main-Categories</th>
+                                   <th>Sub-Categories</th>
+                                   <th></th>
+                                 </tr>
+                               </thead>
+                               <tbody id="subCategoryTable"></tbody>
+                             </table>
+                           </div>
+                           <div class="editSubCategorySection" style="display:none;">
+                             <div class="row">
+                               <div class="col-md-12">
+                                 <h3 class="editSubCategoryText">Main-Category Name</h3>
+                               </div>
+                               <div class="editSubCategoryDiv" style="width:100%;">
+                                 <div class="editSubCategoryData"></div>
+                                 </div>
+                                 <div class="col-md-12">
+                                   <button type="button" class="btn btn-warning " style="float:right;" onclick="cancelEditSubCategory()">Back</button>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+     <!-- main category -->
+      <div class="modal fade mainCategory-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+       <div class="modal-dialog modal-md">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="mainCategoryTitle"></h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-body">
+               <div class="container-fluid">
+                 <div class="row">
+                   <div class="col-md-12 i" style="margin-bottom:10px;">
+                     <button type="button" class="btn btn-primary newMainCategoryBtn" >New Main</button>
+                     <p style="color:blue;display:none;" id="successMessage">Operation Successful</p>
+                   </div>
+
+                   <div class="col-md-12 row newMainCategory" style="display:none;">
+
+                     <div class="col-md-12">
+                       <div class="form-group">
+                         <input type="text" class="form-control" placeholder="Enter Main-Category" id="newMainCategoryInput">
+                       </div>
+                     </div>
+                     <div class="col-md-12">
+                       <div class="form-group">
+                         <button type="button"  class="btn btn-success addMainCategory" >Add</button>
+                         <button type="button" class="btn btn-danger" id="cancelNewMainCategory">Cancel</button>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-md-12">
+                     <div class="table-responsive">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody id="mainCategoryTable">
+
+                          </tbody>
+                        </table>
+                      </div>
+                   </div>
+                 </div>
+               </div>
+
+             </div>
+           </div>
+         </div>
+       </div>
+
+
+
+
+    <!-- discounts -->
+     <div class="modal fade discount-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+           <div class="modal-header">
+              <h5 class="modal-title" id="discountTitle"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-12 i" style="margin-bottom:10px;">
+                    <button type="button" class="btn btn-primary newDiscountBtn" >New Discount</button>
+                    <p style="color:blue;display:none;" id="successMessage">Operation Successful</p>
+                  </div>
+
+                  <div class="col-md-12 row newDiscount" style="display:none;">
+
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Enter Discount" id="newDiscountInput">
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <button type="button"  class="btn btn-success addDiscount" >Add Discount</button>
+                        <button type="button" class="btn btn-danger" id="cancelNewDiscount">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="table-responsive">
+                       <table class="table table-bordered">
+                         <thead>
+                           <tr>
+                             <th>Percentage</th>
+                             <th></th>
+                           </tr>
+                         </thead>
+                         <tbody id="discountTable">
+
+                         </tbody>
+                       </table>
+                     </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="/js/admin/completeOrder.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/admin/editStaff.js"></script>
+    <script src="/js/admin/discount.js"></script>
+    <script src="/js/admin/category.js"></script>
+    <script src="/js/admin/option.js"></script>
+    <script src="/js/admin/newProduct.js"></script>
+
+  </body>
+
+
+
+</html>

@@ -1,0 +1,66 @@
+<div  style="margin:20px;">
+   <button type="button" name="button" class="btn btn-primary" onclick="window.location.href='/adminApi/newStaff'">New Staff</button>
+
+</div>
+<div class="table-responsive">
+   <table class="table table-bordered">
+     <thead>
+       <tr>
+         <th>#</th>
+         <th>First Name</th>
+         <th>Last Name</th>
+         <th>Role</th>
+         <th>Phone Number</th>
+         <th></th>
+       </tr>
+     </thead>
+     <tbody>
+       <% staffs.forEach(function(staff, indx){ %>
+       <tr>
+         <td><%=++indx %></td>
+         <td><%=staff.fname%></td>
+         <td><%=staff.lname%></td>
+         <td style="<%=staff.role === "Admin" ? 'color:blue;': 'color:red;'%>" ><%=staff.role%></td>
+         <td><%=staff.phonenumber%></td>
+         <td>
+           <button type="button" class="btn btn-success editStaff-btn" id="<%=staff._id%>" data-toggle="modal" data-target=".editStaff"> Edit</button>
+         <% if(JSON.stringify(user._id) !== JSON.stringify(staff._id)){%>
+            <button type="button" class="btn btn-danger delete-btn" id="<%=staff._id%>" data-toggle="modal" data-target=".deleteModal"> Delete </button>
+          <% } %>
+         </td>
+       </tr>
+       <% }) %>
+     </tbody>
+   </table>
+ </div>
+
+ <!-- update staff -->
+ <div class="modal fade editStaff" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div style="text-align:center">
+            <h4>Edit Staff</h4>
+            <hr/>
+          </div>
+         <div  id="editStaff-div">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade deleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" >
+    <div class="modal-content">
+      <div class="modal-body" style="text-align:center">
+        <p>Are you sure you want to continue?</p>
+        <button type="button" class="btn btn-primary" onclick="window.location.href='/adminApi/staffs'">Cancel</button>
+        <button type="button" class="btn btn-danger deleteStaff">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

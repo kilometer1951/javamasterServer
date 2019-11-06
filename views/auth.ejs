@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+    <title>Auth</title>
+  </head>
+  <body>
+    <div class="auth">
+      <span style="font-size:3em;float:right" onclick="window.location.href='/mobileApp/products'"><i class="fas fa-times"></i></span>
+      <div class="authLogo" style="text-align:center;margin-top:130px;">
+        <img src="/images/CCAR_Logo.png" style="width:70%;display:inline;" class="authLoginLogo">
+        <div style="display:none;" class="authSignupTextDiv">
+          <span style="font-size:4em; font-family:boldFont;">SIGN UP WITH EMAIL</span>
+          <span style="font-size:3em; font-family:letterFont;">Welcome to the family</span>
+        </div>
+      </div>
+
+      <div class="signin" style="margin-top:15%;display:block;">
+          <button type="button" name="button" class="socialAuth"><span style="margin-left:60px;"><span style="font-size:4em;"><i class="fab fa-google"></i></span> <span style="margin-left:50px;font-size:2.5em;">Continue with Google</span></span></button>
+          <button type="button" name="button" class="socialAuth"><span style="margin-left:60px;"><span style="font-size:4em;"><i class="fab fa-facebook-square"></i> </span><span style="margin-left:60px;font-size:2.5em;">Continue with Facebook</span></span></button>
+          <div class="container-fluid" style="width:98%;">
+            <div class="row">
+              <div class="col-md-5" style="height:5px;background-color:#9e9e9e;margin-top:35px;"></div>
+              <div class="col-md-2" style="font-size:3em;color:#9e9e9e">OR</div>
+              <div class="col-md-5" style="height:5px;background-color:#9e9e9e;margin-top:35px;"></div>
+            </div>
+          </div>
+          <div class="authSigninFields" style="margin-top:50px;">
+            <div class="container-fluid">
+              <div class="lError" style="background-color:#e65100;color:#fff;border-radius:10px;"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="email" name="email" class="authFields" id="lEmail" placeholder="Email">
+                </div>
+                <div class="col-md-12">
+                  <input type="password" name="email" class="authFields" id="lPassword" placeholder="Password">
+                </div>
+              </div>
+              <button type="submit" class="authBtn signinBtn" id="signinBtn">LOG IN</button>
+              <div style="text-align:center;font-family: letterFont;margin-top:20px;font-size: 2.3em;color:#757575;">
+                <span>Forgot Password?</span>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="signup" style="margin-top:15%;display:none;">
+          <div class="authSigninFields" style="margin-top:50px;">
+            <div class="container-fluid">
+              <div class="sError" style="background-color:#e65100;color:#fff;border-radius:10px;"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="text" name="name" class="authFields" id="name" placeholder="Name">
+                </div>
+                <div class="col-md-12">
+                  <input type="email" name="email" class="authFields" id="sEmail" placeholder="Email">
+                </div>
+                <div class="col-md-12">
+                  <input type="password" name="password" class="authFields" id="sPassword" placeholder="Password">
+                </div>
+              </div>
+              <button type="submit" class="authBtnSignup">Create Account</button>
+            </div>
+          </div>
+      </div>
+      <div class="footer">
+        <span style="font-size:2.5em;" id="footerText">Don't have an account? <span style="color:#000;" onclick="toggleToLogin()">Signup</span></span>
+      </div>
+    </div>
+
+
+
+
+
+
+        <!-- jQuery library -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+     <!-- Popper JS -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+     <!-- Latest compiled JavaScript -->
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+     <script src="/js/auth.js"></script>
+  </body>
+</html>

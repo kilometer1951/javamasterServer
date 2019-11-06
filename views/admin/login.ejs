@@ -1,0 +1,42 @@
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<style media="screen">
+  .adminAuth {
+    width:50%;
+    padding:40px;
+    background:#fff;
+    margin:0 auto;
+    text-align:center;
+    box-shadow: 3px 4px 12px 0 rgba(0,0,0,0.17);
+    margin-top:10%;
+
+  }
+</style>
+
+
+<div class="adminAuth">
+  <div style="margin-bottom:50px;">
+    <img src="../../images/CCAR_Logo.png" style="width:40%;">
+  </div>
+  <h3>Login</h3>
+  <form action="/adminAuth/loginauthentication" method="POST">
+    <div class="col-md-12">
+      <div class="form-group">
+        <input type="email" name="email" id="email" class="form-control" placeholder="username">
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <input type="password" name="password" id="password" class="form-control" placeholder="passowrd">
+      </div>
+    </div>
+    <input type="submit" name="login" value="Login" id="login" class="btn btn-primary">
+  </form>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

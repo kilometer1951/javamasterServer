@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title></title>
+    <style media="screen">
+    @font-face {
+      font-family: letterFont;
+      src: url("/webfont/Obviously-Regular.woff") format("woff"),
+        url("/webfont/Obviously-Regular.otf") format("woff");
+    }
+
+    </style>
+  </head>
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+
+  <body style="background:#3fb149;">
+    <input type="hidden" id="user_email" value="<%=user.email%>">
+    <input type="hidden" id="subTotal" value="<%=subTotal%>">
+    <input type="hidden" id="stripeFee" value="<%=stripeFee%>">
+    <input type="hidden" id="tax" value="<%=tax%>">
+    <input type="hidden" id="total" value="<%=total%>">
+    <input type="hidden" id="cartID" value="<%=cartID%>">
+
+    <div style="font-size:3em; text-align:center;font-family: letterFont;margin-top:200px;color:#fff;">
+       <img src="/images/loaderwhite.gif" class="loadingImage">
+       <button type="button" class="returnError" style="border:none;background:transparent;color:#fff;font-family: letterFont;font-size:.5em;" onclick='window.location.href = "/mobileApp/products"'>Oops Click me to return!</button>
+    </div>
+
+
+    <script src="https://js.stripe.com/v3/"></script>
+
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+
+  <script type="text/javascript">
+  const user_email = $("#user_email").val();
+  const subTotal = $("#subTotal").val();
+  const stripeFee = $("#stripeFee").val();
+  const tax = $("#tax").val();
+  const total = parseFloat($("#total").val());
+  const cartID = $("#cartID").val();
+  const stripePriceTotal = parseFloat(total) * 100;
+
+  const handler = StripeCheckout.configure({
+  key: "pk_test_HR6sgMddOlVwJ7AwqvR8Wu0e",
+  image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+  locale: "auto",
+  token: function(token) {
+    var token = token.id;
+    $.post("/api/checkout", {
+        token,
+        user_email,
+        subTotal,
+        stripeFee,
+        tax,
+        total,
+        cartID
+      }).then(result => {
+        if (result.message === "suc") {
+
+          window.location.href="/mobileApp/succMessage/suc/"+cartID
+
+        } else {
+           window.location.href="/mobileApp/succMessage/err/null"
+        }
+      });
+
+  }
+});
+
+const email = document.getElementById("user_email").value
+handler.open({
+  name: "Conter Coffee Air Roasters",
+  description: "Online Purchase",
+  zipCode: true,
+  amount: stripePriceTotal,
+});
+
+// // Close Checkout on page navigation:
+// window.addEventListener('popstate', function() {
+//   window.location.href = "/mobileApp/products"
+//   handler.close();
+// });
+//
+  setInterval(function(){
+    if(!$('.stripe_checkout_app').is(":visible")){
+      $(".loadingImage").css({display:"none"})
+      $(".returnError").css({display:"inline"})
+    }
+},500)
+
+
+
+  </script>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  </head>
+  <body id="appBody">
+    <div class="header fixed-top" style="display:block;">
+       <div style="padding:30px;" class="product-top-header">
+          <a style="float:left;" onclick="openSideMenu()"><img src="/images/icons/hamburger.png" style="width:25%;height:25%;margin-top:10px;"/></a>
+          <a href="/mobileApp/products"><img src="/images/logo.png" style="width:50%;height:50%;margin-top:20px;"/></a>
+          <%if(!user){%>
+           <button type="button"  onclick="window.location.href ='/mobileApp/auth'" style="font-size:3em;background:transparent;border:none;float:right;"><i class="far fa-user-circle"></i></button>
+          <%} else {%>
+  <%if(cartCheckout_number.length === 0){%>
+            <button type="button" class="cartBtn" onclick=navigateToCart() style="float:right;background:transparent;border:none"><img src='/images/icons/cartHasNoItem.png' style="width:50px;" id="cartImg"/></button>
+<% } else {%>
+
+  <button type="button" class="cartBtn" onclick=navigateToCart() style="float:right;background:transparent;border:none;"><img src='<%=cartCheckout_number[0].items.length === 0 ? "/images/icons/cartHasNoItem.png": "/images/icons/cartHasItem.png"%>' style="width:50px;" id="cartImg"/></button>
+
+    <% } %>
+            <% } %>
+       </div>
+       <div class="product-footer" style="display:block;">
+         <div style="padding-top:16px;">
+           <a href="#" onclick=navigateToMenu() class="menu_nav">Menu</a>
+           <a href="#" onclick=navigateToFeatured()>Featured</a>
+           <%if(user){%>
+           <a href="#" onclick=navigateToReceipt()>Receipt</a>
+           <a href="#" style="margin-left:215px;" ><i class="fas fa-search"></i></a>
+           <% } else {%>
+             <a href="#" style="margin-left:410px;" ><i class="fas fa-search"></i></a>
+
+  <% }%>
+         </div>
+       </div>
+    </div>
+
+
+    <%- body %>
+    <div class="updateMessage">
+        <span><i class="fa fa-check-circle"></i> Cart Updated</span>
+    </div>
+
+
+
+    <div class="menu" style="margin-top:20%;margin-bottom:15px;display:block;"></div>
+
+    <div class="reviewOrder" style="display:none;">
+      <div class="reviewOrderHeader">
+        <p>Review Order</p>
+      </div>
+        <div class="row reviewOrderData"></div>
+        <div style="margin-top:50px;text-align:center;margin-bottom:30px;display:none;" id="reviewOrderTotalSection">
+          <span style="font-size:2.5em;" id="reviewOrderSubTotal"></span><br/>
+          <span style="font-size:2.5em;display:none;" id="reviewOrderFee"></span><br/>
+          <span style="font-size:2.5em;" id="reviewOrderTax"></span><br/>
+          <h2 style="font-size:3.5em;" id="reviewOrderTotal"></h2>
+          <button type="button" class="checkOut"></button>
+        </div>
+        <div id="noDataInCartDiv">
+          <p>No item in cart</p>
+        </div>
+
+    </div>
+
+
+    <div class="receipt" style="display:none;"></div>
+
+
+
+
+    <div class="sideMenu">
+        <h2 onclick="openAboutUs()">Order <br/>Our Story</h2>
+        <div>
+          <span>mon to fri 6:30am-4pm<br/>sat to sun 7am-5pm</span>
+        </div>
+        <div>
+          <span>7324 w.madision<br/>forest park, il, 60130<br/>(708)689-8896</span><br/>
+        </div>
+        <%if(user) { %>
+        <div style="bottom: 0px; width: 100%;margin-bottom:20px;" onclick="openAccount()">
+         <p style="font-size:5em;"><i class="far fa-user-circle"></i></p>
+         <span>Account</span>
+       </div>
+       <% } %>
+    </div>
+    <div class="aboutUs">
+      <div style="margin-bottom:120px;">
+        <p style="font-size:3em;float:right;" onclick="closeAboutUs()"><i class="fas fa-times"></i></p>
+      </div>
+      <p>After our green coffee beans are carefully selected,
+         we roast them on demand with our patented electric air
+         process that takes less than ten minutes. Plus, the hot
+         air technology removes the chaff (the bean’s outer layer)
+         before it burns up like it does in traditional drum roasting.
+         Where there’s no torched chaff, there's no bitter taste.
+         We’ve got our own thing going on, and that’s not just hot air.
+
+         <p>To raise the standard of sustainable coffee roasting — one batch at a time.</p>
+      </p>
+    </div>
+
+
+    <div class="featured" style="margin-top:25%;display:none"></div>
+
+
+    <div class="account" style="display:none;">
+      <div class="accountHeader">
+        <p><i class="far fa-user-circle"></i> Account</p>
+      </div>
+      <div style="text-align:center;padding:50px;" id="accountData"></div>
+    </div>
+
+    <div class="loader" style="text-align:center;margin-top:30%;display:none;">
+      <img src="/images/loadergreen.gif" style="width:60%;margin-top:100px;">
+    </div>
+
+
+
+
+
+
+    <!-- jQuery library -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+ <!-- Popper JS -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+ <!-- Latest compiled JavaScript -->
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ <script src="/socket.io/socket.io.js"></script>
+ <script src="/js/mobileApp/menu.js"></script>
+ <script src="https://momentjs.com/downloads/moment.js"></script>
+ <script type="text/javascript">
+//
+//    function openAuthScreen() {
+//       document.querySelector(".authSection").style.display = "block";
+//       document.querySelector(".header").style.display = "none";
+//       document.querySelector(".products-section").style.display = "none";
+//       document.querySelector(".menu").style.display = "none";
+//       document.querySelector(".product-details").style.display = "none";
+//    }
+//    function backToProductScreen() {
+//       document.querySelector(".authSection").style.display = "none";
+//       document.querySelector(".header").style.display = "block";
+//       document.querySelector(".products-section").style.display = "block";
+//       document.querySelector(".product-details").style.display = "none";
+//    }
+//
+//    function displaySignup() {
+//       document.querySelector(".login").style.display = "none";
+//       document.querySelector(".signup").style.display = "block";
+//       document.querySelector(".authText").innerHTML = "Signup";
+//       document.querySelector("#signupText").style.display = "none";
+//       document.querySelector("#loginText").style.display = "block";
+//
+//    }
+//    function displayLogin() {
+//       document.querySelector(".login").style.display = "block";
+//       document.querySelector(".signup").style.display = "none";
+//       document.querySelector(".authText").innerHTML = "Login";
+//       document.querySelector("#signupText").style.display = "block";
+//       document.querySelector("#loginText").style.display = "none";
+//    }
+
+
+
+//  function openProductDetail() {
+//    document.querySelector(".product-details").style.display = "block";
+//    document.querySelector(".products-section").style.display = "none";
+//
+//
+//  }
+//
+// function addToCart() {
+//   document.querySelector(".hasOptionsModal").style.display = "block";
+// }
+ </script>
+
+
+  </body>
+
+
+</html>

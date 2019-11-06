@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<form style="text-align:center;">
+   <section style="display:block;" id="section1">
+     <input type="text" name="userid" placeholder="Enter your temp password" id="userid">
+     <input type="submit" value="Next" id="next">
+   </section>
+   <div style="display:none;" class="loader">
+     <img src="https://cdn.dribbble.com/users/255512/screenshots/2215917/animation.gif" style='width:50px; height:50px;'>
+   </div>
+   <section style="display:none;" id="section2">
+     <!-- next section when your find id -->
+     <input type="password" name="password" placeholder="Enter your new password" id="password">
+     <input type="password" name="confirmPassword" placeholder="Confirm password" id="cpassword">
+     <button type="button" name="back" id="back">Back</button>
+     <input type="submit" value="Submit" id="firstUseLogin">
+   </section>
+   <div class="loginLink" style="display:none"></div>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script src="/js/admin/firstUse.js"></script>
